@@ -1,4 +1,4 @@
-// 백준에선 틀렸다고 뜸. 어디가 문제인지 못 찾겠음
+// not yet
 
 #include <iostream>
 #include <algorithm>

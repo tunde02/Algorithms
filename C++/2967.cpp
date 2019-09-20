@@ -1,4 +1,4 @@
-// ¹Ý·Ê°¡ ¹¹°¡ ÀÖ´ÂÁö ¸ð¸£°Ú´Ù.
+// not yet
 
 // #include <iostream>
 // using namespace std;
@@ -73,7 +73,7 @@
 //             cin >> rooms[i][j];
 //         }
 //     }
-// print(rooms[0]); // rooms¿¡ Å©±âº¸´Ù Å« ÃÊ±â°ªÀÌ µé¾î°¡¹ö¸² ¾Ö¸ÅÇÏ°Ô
+// print(rooms[0]); // roomsï¿½ï¿½ Å©ï¿½âº¸ï¿½ï¿½ Å« ï¿½Ê±â°ªï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¸ï¿½ï¿½Ï°ï¿½
 //     for(int i=0; i<r; i++) {
 //         for(int j=0; j<c; j++) {
 //             if(rooms[i][j] == 'x' || rooms[i][j] == 's') {
