@@ -26,7 +26,7 @@ int main() {
 
         result = ((float)upperStudents) / students;
 
-        cout.setf(ios::showpoint);
+        cout.setf(ios::fixed);
         cout.precision(3);
         cout << round(result * 100000) / 1000 << "%\n";
     }
