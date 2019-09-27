@@ -29,6 +29,8 @@ using namespace std;
 
 typedef vector<vector<tuple<int, int>>> graph;
 
+/* COLOR : 0, 1, 2 */
+
 int main()
 {
 	int t, points, lineNum;
