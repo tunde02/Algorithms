@@ -384,7 +384,7 @@ void initActs(vector<vector<char>> map, vector<vector<tuple<int, int>>>* acts, i
 			int v_availableActs = 0b00000;
 			bool isHorizontal = horizontalTest(&map, i, j);
 			bool isVertical = verticalTest(&map, i, j);
-			int turn = turnTest(&map, i, j) ? TURN : 0b0000;
+			int turn = turnTest(&map, i, j) ? TURN : 0b00000;
 
 			if(isHorizontal)
 			{

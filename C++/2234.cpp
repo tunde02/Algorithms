@@ -126,7 +126,7 @@ int getRoomSize(vector<vector<int>>* map, vector<vector<bool>>* visited, int x, 
     // 방문여부를 업데이트해준다
 	visited->at(x).at(y) = true;
 
-    // std::Vector의 at()이 범위를 넘어가면 out_of_range를 던져줘서 
+    // std::Vector의 at()이 범위를 넘어가면 out_of_range를 던져줘서
     // try catch로 전부 묶어줌
     // 벽이 없는 쪽으로 옮겨가며 사이즈를 점점 더해주고,
     // 최종적으로 x, y 칸이 포함된 방의 크기를 반환한다
