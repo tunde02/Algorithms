@@ -4,6 +4,11 @@
         "xstring": "cpp",
         "array": "cpp",
         "deque": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "xlocale": "cpp",
+        "xutility": "cpp",
+        "queue": "cpp"
     }
 }

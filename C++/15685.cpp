@@ -32,7 +32,7 @@ EXPLANATION
 좌표평면상의 flag를 갱신해준다.
 2. 좌표평면의 (0, 0)부터 돌면서 flag가 true이면 그 점을 왼쪽 위 꼭짓점으로 하는
 정사각형 좌표들을 확인하여 전부 true이면 count++
-3. x=99, y=99까지만 돌고 구한 count 출력
+3. x=100, y=100까지만 돌고 구한 count 출력
 
 90도 회전 : (x, y) -> (-y, x)
 끝에 이어붙이기 : 커브의 끝 좌표를 (x, y)라고 하면 (x + y, y - x)만큼 이동
@@ -93,13 +93,13 @@ int main()
 void dragonCurve(vector<pair<int, int>>* locations, vector<vector<bool>>* map)
 {
 	vector<pair<int, int>> newCurves;
-	pair<int, int> shift = make_pair(locations->back().first + locations->back().second, locations->back().second - locations->back().first);
+	pair<int, int> offset = make_pair(locations->back().first + locations->back().second, locations->back().second - locations->back().first);
 
 	for(int i = 0; i < locations->size() - 1; i++)
 	{
 		pair<int, int> newPos = make_pair(-locations->at(i).second, locations->at(i).first);
-		newPos.first += shift.first;
-		newPos.second += shift.second;
+		newPos.first += offset.first;
+		newPos.second += offset.second;
 
 		map->at(newPos.first).at(newPos.second) = true;
 
