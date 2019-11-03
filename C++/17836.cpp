@@ -1,27 +1,30 @@
-/*Time OUt*/
+/*
+-EXPLANATION-
+
+- 그람을 주우면 벽이 없는 것과 같으므로 그람을 줍는 경우의 time은 그람까지BFS + 그람위치와 공주위치의 차이
+- BFS로 공주를 발견한 time과 그람을 줍고 벽을 부수며 공주를 발견한 time을 비교하여 최솟값을 출력
+- BFS를 돌아도 공주를 발견하지 못한다면 T + 1을 반환하여 실패했음을 알립니다
+*/
 
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <stack>
+#include <tuple>
 using namespace std;
 
 int N, M, T;
 int gx, gy;
 vector<vector<int>> map;
-vector<vector<bool>> visited;
-vector<pair<int, int>> list;
 int dx[4] = { 0, -1, 0, 1 };
 int dy[4] = { 1, 0, -1, 0 };
 
-int normalBFS(int x, int y);
-int gramBFS();
+int BFS(int destX, int destY);
 
 int main()
 {
 	cin >> N >> M >> T;
 	map = vector<vector<int>>(N + 1, vector<int>(M + 1, 0));
-	
+
 	for(int i = 1; i < N + 1; i++)
 	{
 		for(int j = 1; j < M + 1; j++)
@@ -33,117 +36,57 @@ int main()
 				gx = i;
 				gy = j;
 			}
-			else if(input == 1)
-				list.push_back({ i, j });
 
 			map[i][j] = input;
 		}
 	}
 
-	cout << min(normalBFS(N, M), gramBFS());
+	int normalBFS = BFS(N, M);
+	int gramBFS = BFS(gx, gy);
+	int minTime = min(normalBFS, gramBFS + (N - gx) + (M - gy));
+
+	if(normalBFS == T + 1 && gramBFS == T + 1 || minTime > T)
+		cout << "Fail";
+	else
+		cout << minTime;
 }
 
-int normalBFS(int x, int y)
+int BFS(int destX, int destY)
 {
-	int time = 1;
-	queue<pair<int, int>> q1;
-	queue<pair<int, int>> q2;
-	visited = vector<vector<bool>>(N + 1, vector<bool>(M + 1, false));
 
-	q2.push({ 1, 1 });
-	q1 = q2;
+	queue<tuple<int, int, int>> q;
+	vector<vector<bool>> visited(N + 1, vector<bool>(M + 1, false));
+
+	q.push(make_tuple(0, 1, 1));
 	visited[1][1] = true;
-	while(!q2.empty())
+	while(!q.empty())
 	{
-		q1 = q2;
+		int nowX = get<1>(q.front()), nowY = get<2>(q.front());
+		int time = get<0>(q.front());
 
-		while(!q1.empty())
+		for(int i = 0; i < 4; i++)
 		{
-			int nowX = q1.front().first, nowY = q1.front().second;
+			int nextX = nowX + dx[i], nextY = nowY + dy[i];
 
-			for(int i = 0; i < 4; i++)
+			if(!(1 <= nextX && nextX < N + 1 && 1 <= nextY && nextY < M + 1))
+				continue;
+			if(visited[nextX][nextY])
+				continue;
+
+			visited[nextX][nextY] = true;
+
+			if(nextX == destX && nextY == destY)
 			{
-				int nextX = nowX + dx[i], nextY = nowY + dy[i];
-
-				if(!(1 <= nextX && nextX < N + 1 && 1 <= nextY && nextY < M + 1))
-					continue;
-				if(visited[nextX][nextY])
-					continue;
-
-				visited[nextX][nextY] = true;
-
-				if(nextX == x && nextY == y)
-				{
-					return time;
-				}
-				else if(map[nextX][nextY] != 1)
-				{
-					q2.push({ nextX, nextY });
-				}
+				return time + 1;
 			}
-
-			q1.pop();
-		}
-		time++;
-	}
-	
-	return -1;
-}
-
-int gramBFS()
-{
-	int baseTime = normalBFS(gx, gy) + 1;
-	int minTime = N * M;
-	
-	for(pair<int, int> p : list)
-	{
-		queue<pair<int, int>> q1;
-		queue<pair<int, int>> q2;
-		visited = vector<vector<bool>>(N + 1, vector<bool>(M + 1, false));
-		map[p.first][p.second] = 0;
-		int time = baseTime;
-		bool isFinished = false;
-		
-		q2.push({ gx, gy });
-		q1 = q2;
-		visited[1][1] = true;
-		while(!q2.empty() && !isFinished)
-		{
-			q1 = q2;
-
-			while(!q1.empty() && !isFinished)
+			else if(map[nextX][nextY] != 1)
 			{
-				int nowX = q1.front().first, nowY = q1.front().second;
-
-				for(int i = 0; i < 4; i++)
-				{
-					int nextX = nowX + dx[i], nextY = nowY + dy[i];
-
-					if(!(1 <= nextX && nextX < N + 1 && 1 <= nextY && nextY < M + 1))
-						continue;
-					if(visited[nextX][nextY])
-						continue;
-
-					visited[nextX][nextY] = true;
-
-					if(nextX == N && nextY == M)
-					{
-						minTime = time < minTime ? time : minTime;
-						isFinished = true;
-					}
-					else if(map[nextX][nextY] != 1)
-					{
-						q2.push({ nextX, nextY });
-					}
-				}
-
-				q1.pop();
+				q.push(make_tuple(time + 1, nextX, nextY));
 			}
-			time++;
 		}
 
-		map[p.first][p.second] = 1;
+		q.pop();
 	}
 
-	return minTime;
+	return T + 1;
 }
