@@ -139,7 +139,7 @@ void dijkstra()
 			if(distances[now] + nextDistance < distances[nextNum])
 			{
 				distances[nextNum] = distances[now] + nextDistance;
-				pq.push({ nextDistance, nextNum });
+				pq.push({ distances[nextNum], nextNum });
 			}
 		}
 	}
