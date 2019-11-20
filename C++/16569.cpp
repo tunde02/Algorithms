@@ -54,11 +54,10 @@ class Space
 public:
 	bool available = true;
 	bool isHuman = false;
-	int x = 0, y = 0;
 	int height = 0;
 	int time = 0;
 	Space() {}
-	Space(int x, int y, int h) : x(x), y(y), height(h) {}
+	Space(int h) : height(h) {}
 };
 
 int M, N, V, X, Y;
@@ -66,7 +65,7 @@ int dx[4] = { -1, 0, 1, 0 };
 int dy[4] = { 0, -1, 0, 1 };
 vector<vector<Space>> map;
 vector<vector<bool>> visited;
-vector<Space> volcanos;
+vector<pair<int, int>> volcanoes;
 
 pair<int, int> BFS();
 
@@ -80,7 +79,7 @@ int main()
 		for(int j = 1; j <= N; j++)
 		{
 			int input; cin >> input;
-			map[i][j] = Space(i, j, input);
+			map[i][j] = Space(input);
 		}
 	}
 
@@ -89,7 +88,7 @@ int main()
 		int x, y, t; cin >> x >> y >> t;
 		map[x][y].time = t;
 		map[x][y].available = false;
-		volcanos.push_back(map[x][y]);
+		volcanoes.push_back({ x, y });
 	}
 
 	map[X][Y].isHuman = true;
@@ -101,10 +100,10 @@ int main()
 pair<int, int> BFS()
 {
 	int maxHeight = map[X][Y].height, times = 0;
-	queue<pair<pair<int, int>, int>> q;
-	
-	for(int i = 0; i < volcanos.size(); i++)
-		q.push({ {volcanos[i].x, volcanos[i].y}, 0 });
+	queue<pair<pair<int, int>, int>> q; // {{x, y}, time}
+
+	for(int i = 0; i < volcanoes.size(); i++)
+		q.push({ {volcanoes[i].first, volcanoes[i].second}, 0 });
 	q.push({ {X, Y}, 0 });
 
 	while(!q.empty())
@@ -115,6 +114,7 @@ pair<int, int> BFS()
 
 		if(map[nowX][nowY].time > time)
 		{
+			// 아직 폭발 시간이 되지 않은 화산들을 다음으로 넘김
 			q.push({ {nowX, nowY}, time + 1 });
 			continue;
 		}
@@ -130,9 +130,9 @@ pair<int, int> BFS()
 
 			visited[nextX][nextY] = true;
 
-			if(map[nowX][nowY].isHuman)
+			if(map[nowX][nowY].isHuman) // now가 사람이 갈 수 있는 곳이고
 			{
-				if(map[nextX][nextY].available)
+				if(map[nextX][nextY].available) // next에 쇄설물이 없다면
 				{
 					map[nextX][nextY].isHuman = true;
 					q.push({ {nextX, nextY}, time + 1 });
@@ -144,12 +144,15 @@ pair<int, int> BFS()
 					}
 				}
 			}
-			else
+			else // now가 쇄설물이라면
 			{
 				map[nextX][nextY].isHuman = false;
 				map[nextX][nextY].available = false;
-				map[nextX][nextY].time = map[nextX][nextY].time < time + 1 ? map[nextX][nextY].time : time + 1;
 				q.push({ {nextX, nextY}, time + 1 });
+				
+				// next가 아직 폭발 시간이 되지 않은 화산이라면 쇄설물로 덮어씌움
+				if(map[nextX][nextY].time > time + 1)
+					map[nextX][nextY].time = time + 1;
 			}
 		}
 	}
