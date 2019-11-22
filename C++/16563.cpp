@@ -1,7 +1,6 @@
 /*
-TIME OUT
 16563 - 어려운 소인수분해
-
+<TIME OUT>
 -TEST CASE-
 5
 5 4 45 64 54
