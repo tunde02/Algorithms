@@ -1,6 +1,19 @@
 {
     "files.associations": {
         "vector": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "unordered_map": "cpp",
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "xlocale": "cpp",
+        "xutility": "cpp",
+        "queue": "cpp",
+        "initializer_list": "cpp",
+        "stack": "cpp",
+        "type_traits": "cpp",
+        "ios": "cpp",
+        "xiosbase": "cpp"
     }
 }
